@@ -4,6 +4,7 @@ from typing import List
 import pandas as pd
 
 from lecture import create_lectures_list, Lecture
+from utils import get_color
 
 START_HOUR = 9  # 9:00 AM
 END_HOUR = 22  # 10:00 PM
@@ -102,7 +103,7 @@ def create_schedule(frame):
 
     # Add the paned windows to the grid
     for i in range(
-            (END_HOUR - START_HOUR) * (60 // HOURLY_INTERVAL)
+        (END_HOUR - START_HOUR) * (60 // HOURLY_INTERVAL)
     ):  # For each HOURLY_INTERVAL-minute interval between START_HOUR and END_HOUR
         for j in range(len(days)):  # For each day
             for k in range(NUMBER_OF_COLUMNS):  # For each column in the day
@@ -128,7 +129,7 @@ def create_schedule(frame):
 
     # Make each column expand to fill the available space
     for i in range(
-            len(days) * NUMBER_OF_COLUMNS + 2
+        len(days) * NUMBER_OF_COLUMNS + 2
     ):  # Adjust for the moved hour column
         frame.columnconfigure(i, weight=1)
 
@@ -158,7 +159,9 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
     # Iterate over the lectures
     for lecture in lectures:
         bg_color = (
-            PRACTICE_BG_COLOR if "תרגיל" in lecture.class_name else LECTURE_BG_COLOR
+            get_color(lecture.class_name)[0]
+            if "תרגיל" in lecture.class_name
+            else get_color(lecture.class_name)[1]
         )
 
         # Find the index of the day and time
@@ -185,8 +188,8 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
         for col in reversed(range(1, NUMBER_OF_COLUMNS + 1)):
             # If there is no lecture in the column or the current lecture's start time is later than the end time of the last lecture in the column
             if (
-                    last_lecture[lecture.day][col] is None
-                    or lecture.start_time >= last_lecture[lecture.day][col].end_time
+                last_lecture[lecture.day][col] is None
+                or lecture.start_time >= last_lecture[lecture.day][col].end_time
             ):
                 # Set column to the current column and break the loop
                 column = col
