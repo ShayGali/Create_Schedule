@@ -1,17 +1,23 @@
 import tkinter as tk
+from typing import List
+
 import pandas as pd
 
-from lecture import create_lectures_list
+from lecture import create_lectures_list, Lecture
 
 START_HOUR = 9  # 9:00 AM
 END_HOUR = 22  # 10:00 PM
 
-NUMBER_OF_COLUMNS = 8
+NUMBER_OF_COLUMNS = 10
 
 HOURLY_INTERVAL = 30
 
+LECTURE_BG_COLOR = "#FFF9C4"
+PRACTICE_BG_COLOR = "#FFE0B2"
+EMPTY_BG_COLOR = "#F5F5F5"
+
 # days = ["ו", "ה", "ד", "ג", "ב", "א"]
-days = [ "ה", "ד", "ג", "ב", "א"]
+days = ["ה", "ד", "ג", "ב", "א"]
 
 day_to_full_name = {
     "א": "ראשון",
@@ -67,7 +73,6 @@ def create_frame(root):
 
     # Pack the PanedWindow
     panedwindow.pack(fill="both", expand=True)
-
     return frame
 
 
@@ -78,7 +83,7 @@ def create_schedule(frame):
     cells = [
         [
             [
-                tk.PanedWindow(frame, borderwidth=1, relief="solid") for _ in range(NUMBER_OF_COLUMNS)
+                tk.PanedWindow(frame, borderwidth=1, relief="solid", bg = EMPTY_BG_COLOR,) for _ in range(NUMBER_OF_COLUMNS)
             ]  # NUMBER_OF_COLUMNS columns for each day
             for _ in days
         ]
@@ -123,16 +128,18 @@ def get_lectures_from_csv():
     return lectures
 
 
-def add_lectures(frame, lectures: list):
+def add_lectures(frame, lectures: List[Lecture]):
     """Add the lectures to the schedule"""
     # Sort the lectures by day and start time
-    lectures = sorted(lectures, key=lambda lecture: (lecture.day, lecture.start_time))
+    lectures = sorted(lectures, key=lambda lec: (lec.day, lec.start_time))
 
     # Keep track of the last lecture for each day
     last_lecture = {day: None for day in days}
 
     # Iterate over the lectures
     for lecture in lectures:
+        bg_color = PRACTICE_BG_COLOR if "תרגיל" in lecture.class_name else LECTURE_BG_COLOR
+
         # Find the index of the day and time
         day_index = days.index(lecture.day)
         start_time_index = times.index(lecture.start_time)
@@ -142,10 +149,10 @@ def add_lectures(frame, lectures: list):
         duration = end_time_index - start_time_index
 
         # Create a new Frame widget for the lecture
-        lecture_frame = tk.Frame(frame, borderwidth=1, relief="solid")
+        lecture_frame = tk.Frame(frame, borderwidth=1, relief="solid", bg=bg_color)
 
         # Create a new Label widget for the lecture
-        lecture_label = tk.Label(lecture_frame, text=lecture)
+        lecture_label = tk.Label(lecture_frame, text=str(lecture), bg=bg_color)
 
         # Add the lecture label to the lecture frame
         lecture_label.pack()
@@ -158,6 +165,10 @@ def add_lectures(frame, lectures: list):
             column = last_lecture[lecture.day].column - 1
         else:
             column = NUMBER_OF_COLUMNS
+
+        if column <= 0:
+            print("try to add lecture in the same time")
+            print(lecture.__repr__())
 
         # Add the lecture frame to the grid
         lecture_frame.grid(
@@ -184,7 +195,6 @@ def main():
     create_schedule(frame)
     lectures = get_lectures_from_csv()
     add_lectures(frame, lectures)
-
     root.mainloop()
 
 
