@@ -17,7 +17,7 @@ def split_based_on_pattern(x):
 
 
 # read the csv file
-df = pd.read_csv("data/table_sem_b.csv")
+df = pd.read_csv("data/table.csv")
 
 
 # Split the 'שעות חדר' column into two new columns - 'חדר' and 'שעות'
@@ -35,7 +35,7 @@ column_order = ['נ"ז', "סמס", "חדר", "שעות", "יום", "מורה", "
 df = df[column_order]
 
 
-df.to_csv("data/clean_data_sem_b.csv", index=False, encoding="utf-8")
+df.to_csv("data/clean_data.csv", index=False, encoding="utf-8")
 
 
 # for display in Hebrew
@@ -47,4 +47,4 @@ for col in df.select_dtypes(include=[object]):
 # # Reverse the column headers
 # df.columns = [get_display(col) for col in df.columns]
 
-df.to_csv("data/clean_data_revers_sem_b.csv", index=False, encoding="utf-8")
+df.to_csv("data/clean_data_revers.csv", index=False, encoding="utf-8")

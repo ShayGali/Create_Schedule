@@ -8,7 +8,7 @@ from lecture import create_lectures_list, Lecture
 START_HOUR = 9  # 9:00 AM
 END_HOUR = 22  # 10:00 PM
 
-NUMBER_OF_COLUMNS = 20
+NUMBER_OF_COLUMNS = 10
 
 HOURLY_INTERVAL = 30
 
