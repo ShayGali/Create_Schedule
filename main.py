@@ -53,7 +53,9 @@ def create_frame(root):
     x_scrollbar = tk.Scrollbar(panedwindow, orient="horizontal", command=canvas.xview)
     x_scrollbar.pack(side="bottom", fill="x")
 
-    y_scrollbar = tk.Scrollbar(frame_with_scrollbar, orient="vertical", command=canvas.yview)
+    y_scrollbar = tk.Scrollbar(
+        frame_with_scrollbar, orient="vertical", command=canvas.yview
+    )
     y_scrollbar.pack(side="right", fill="y")
 
     # Configure the canvas to use the scrollbars
@@ -66,7 +68,9 @@ def create_frame(root):
     canvas.create_window((0, 0), window=frame, anchor="nw")
 
     # Update the scroll-region of the canvas to match the size of the frame
-    frame.bind("<Configure>", lambda event: canvas.configure(scrollregion=canvas.bbox("all")))
+    frame.bind(
+        "<Configure>", lambda event: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
 
     # Add the Frame to the PanedWindow
     panedwindow.add(frame_with_scrollbar)
@@ -83,8 +87,13 @@ def create_schedule(frame):
     cells = [
         [
             [
-                tk.PanedWindow(frame, borderwidth=1, relief="solid", bg=EMPTY_BG_COLOR, ) for _ in
-                range(NUMBER_OF_COLUMNS)
+                tk.PanedWindow(
+                    frame,
+                    borderwidth=1,
+                    relief="solid",
+                    bg=EMPTY_BG_COLOR,
+                )
+                for _ in range(NUMBER_OF_COLUMNS)
             ]  # NUMBER_OF_COLUMNS columns for each day
             for _ in days
         ]
@@ -97,12 +106,16 @@ def create_schedule(frame):
     ):  # For each HOURLY_INTERVAL-minute interval between START_HOUR and END_HOUR
         for j in range(len(days)):  # For each day
             for k in range(NUMBER_OF_COLUMNS):  # For each column in the day
-                cells[i][j][k].grid(row=i + 1, column=j * NUMBER_OF_COLUMNS + k + 1, sticky="nsew")
+                cells[i][j][k].grid(
+                    row=i + 1, column=j * NUMBER_OF_COLUMNS + k + 1, sticky="nsew"
+                )
 
     # Create headers for the rows and columns
     for i, time in enumerate(times):
         tk.Label(frame, text=time, borderwidth=1, relief="solid").grid(
-            row=i + 1, column=len(days) * NUMBER_OF_COLUMNS + 1, sticky="nsew"  # Move to the right side
+            row=i + 1,
+            column=len(days) * NUMBER_OF_COLUMNS + 1,
+            sticky="nsew",  # Move to the right side
         )
 
     for j, day in enumerate(days):
@@ -114,14 +127,16 @@ def create_schedule(frame):
         )
 
     # Make each column expand to fill the available space
-    for i in range(len(days) * NUMBER_OF_COLUMNS + 2):  # Adjust for the moved hour column
+    for i in range(
+            len(days) * NUMBER_OF_COLUMNS + 2
+    ):  # Adjust for the moved hour column
         frame.columnconfigure(i, weight=1)
 
 
 def get_lectures_from_csv():
-    """ Create a list of Lecture objects from the csv file"""
+    """Create a list of Lecture objects from the csv file"""
     # read the csv file
-    df = pd.read_csv("data/clean_data_sem_b.csv")
+    df = pd.read_csv("data/clean_data.csv")
 
     # Create a list of Lecture objects
     lectures = create_lectures_list(df)
@@ -135,11 +150,16 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
     lectures = sorted(lectures, key=lambda lec: (lec.day, lec.start_time))
 
     # Keep track of the last lecture for each day
-    last_lecture = {day: None for day in days}
+    last_lecture = {
+        day: {last_col: None for last_col in range(1, NUMBER_OF_COLUMNS + 1)}
+        for day in days
+    }
 
     # Iterate over the lectures
     for lecture in lectures:
-        bg_color = PRACTICE_BG_COLOR if "תרגיל" in lecture.class_name else LECTURE_BG_COLOR
+        bg_color = (
+            PRACTICE_BG_COLOR if "תרגיל" in lecture.class_name else LECTURE_BG_COLOR
+        )
 
         # Find the index of the day and time
         day_index = days.index(lecture.day)
@@ -158,19 +178,25 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
         # Add the lecture label to the lecture frame
         lecture_label.pack()
 
-        # Calculate the column based on whether the lecture overlaps with the last one
-        if (
-                last_lecture[lecture.day] is not None
-                and last_lecture[lecture.day].end_time > lecture.start_time
-        ):
-            column = last_lecture[lecture.day].column - 1
-        else:
-            column = NUMBER_OF_COLUMNS
+        # Initialize column to -1
+        column = -1
 
-        if column <= 0:
-            pass
-            print("try to add lecture in the same time")
-            print(lecture.__repr__())
+        # Iterate over the columns for the given day
+        for col in reversed(range(1, NUMBER_OF_COLUMNS + 1)):
+            # If there is no lecture in the column or the current lecture's start time is later than the end time of the last lecture in the column
+            if (
+                    last_lecture[lecture.day][col] is None
+                    or lecture.start_time >= last_lecture[lecture.day][col].end_time
+            ):
+                # Set column to the current column and break the loop
+                column = col
+                break
+
+        # If no available column was found
+        if column == -1:
+            # Add a new column for the given day and set column to the index of the new column
+            last_lecture[lecture.day][NUMBER_OF_COLUMNS + 1] = None
+            column = NUMBER_OF_COLUMNS + 1
 
         # Add the lecture frame to the grid
         lecture_frame.grid(
@@ -182,7 +208,7 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
 
         # Update the last lecture and its column
         lecture.column = column
-        last_lecture[lecture.day] = lecture
+        last_lecture[lecture.day][column] = lecture
 
 
 def main():
