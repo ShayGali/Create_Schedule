@@ -83,7 +83,8 @@ def create_schedule(frame):
     cells = [
         [
             [
-                tk.PanedWindow(frame, borderwidth=1, relief="solid", bg = EMPTY_BG_COLOR,) for _ in range(NUMBER_OF_COLUMNS)
+                tk.PanedWindow(frame, borderwidth=1, relief="solid", bg=EMPTY_BG_COLOR, ) for _ in
+                range(NUMBER_OF_COLUMNS)
             ]  # NUMBER_OF_COLUMNS columns for each day
             for _ in days
         ]
@@ -128,7 +129,7 @@ def get_lectures_from_csv():
     return lectures
 
 
-def add_lectures(frame, lectures: List[Lecture]):
+def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
     """Add the lectures to the schedule"""
     # Sort the lectures by day and start time
     lectures = sorted(lectures, key=lambda lec: (lec.day, lec.start_time))
@@ -186,7 +187,7 @@ def add_lectures(frame, lectures: List[Lecture]):
 def main():
     # Create a new Tkinter window
     root = tk.Tk()
-    root.title("Time System")
+    root.title("מערכת שעות")
 
     # Make the window full screen
     root.state("zoomed")

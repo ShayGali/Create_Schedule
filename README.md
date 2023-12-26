@@ -7,7 +7,7 @@ so I wrote this small project to help me with that.
 
 ## How to use it
 
-I write full directions in Hebrew [here](./הסבר.pdf)
+I write full directions in Hebrew [here](assets/הסבר.pdf)
 
 if you want to run it:
 make sure that you have python 3.6 or higher installed on your computer.
@@ -41,4 +41,4 @@ python main.py
 ```
 
 and a window will open with the calendar.
-![calendar](./calendar.png)
+![calendar](./assets/calendar.png)

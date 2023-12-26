@@ -18,7 +18,6 @@ class Lecture:
     end_time: str = None
     start_hour: int = None
     end_hour: int = None
-    column: Optional[int] = None
 
     def __post_init__(self):
         """Calculate the start and end times of the lecture"""
