@@ -2,7 +2,7 @@
 import tabula
 
 # Path to your pdf file
-file = "data/src.pdf"
+file = "data/sem_b.pdf"
 
 # Read PDF file
 tables = tabula.read_pdf(file, pages="all", multiple_tables=True)

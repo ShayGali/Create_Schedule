@@ -8,7 +8,7 @@ from lecture import create_lectures_list, Lecture
 START_HOUR = 9  # 9:00 AM
 END_HOUR = 22  # 10:00 PM
 
-NUMBER_OF_COLUMNS = 10
+NUMBER_OF_COLUMNS = 20
 
 HOURLY_INTERVAL = 30
 
@@ -121,7 +121,7 @@ def create_schedule(frame):
 def get_lectures_from_csv():
     """ Create a list of Lecture objects from the csv file"""
     # read the csv file
-    df = pd.read_csv("data/clean_data.csv")
+    df = pd.read_csv("data/clean_data_sem_b.csv")
 
     # Create a list of Lecture objects
     lectures = create_lectures_list(df)
@@ -168,6 +168,7 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
             column = NUMBER_OF_COLUMNS
 
         if column <= 0:
+            pass
             print("try to add lecture in the same time")
             print(lecture.__repr__())
 

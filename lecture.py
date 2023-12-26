@@ -2,11 +2,13 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 import pandas as pd
+import math
 
 
 @dataclass
 class Lecture:
     """A class to represent a lecture"""
+
     class_name: str
     lecturer: str
     day: str
@@ -24,6 +26,9 @@ class Lecture:
         self.end_time, self.start_time = self.hours.split(" - ")
         self.start_hour = int(self.start_time.split(":")[0])
         self.end_hour = int(self.end_time.split(":")[0])
+
+        if type(self.room) == float and math.isnan(self.room):
+            self.room = "חדר לא ידוע"
 
     def __str__(self):
         """Return a string representation of the lecture"""
