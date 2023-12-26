@@ -3,14 +3,15 @@ import pandas as pd
 
 from lecture import create_lectures_list
 
-START_HOUR = 8  # 8:00 AM
+START_HOUR = 9  # 9:00 AM
 END_HOUR = 22  # 10:00 PM
 
 NUMBER_OF_COLUMNS = 8
 
 HOURLY_INTERVAL = 30
 
-days = ["ו", "ה", "ד", "ג", "ב", "א"]
+# days = ["ו", "ה", "ד", "ג", "ב", "א"]
+days = [ "ה", "ד", "ג", "ב", "א"]
 
 day_to_full_name = {
     "א": "ראשון",
