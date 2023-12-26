@@ -41,3 +41,4 @@ python main.py
 ```
 
 and a window will open with the calendar.
+![calendar](./calendar.png)
