@@ -3,7 +3,10 @@ from typing import List, Optional
 
 import pandas as pd
 import math
+import re
 
+
+pattern = r"\d{2}:\d{2} - \d{2}:\d{2}"
 
 @dataclass
 class Lecture:
@@ -23,6 +26,9 @@ class Lecture:
 
     def __post_init__(self):
         """Calculate the start and end times of the lecture"""
+        if  not re.search(pattern, self.hours):
+            raise ValueError("Invalid hours format. the format should be: 'hh:mm - hh:mm'")
+        
         self.end_time, self.start_time = self.hours.split(" - ")
         self.start_hour = int(self.start_time.split(":")[0])
         self.end_hour = int(self.end_time.split(":")[0])
