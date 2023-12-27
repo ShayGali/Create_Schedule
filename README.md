@@ -7,7 +7,7 @@ table format(cvc file), and from there to display it in a calendar format.
 
 so I wrote this small project to help me with that.
 
-In this project I convert the pdf file to csv file, and then I display it in a calendar format.
+In this project, I convert the pdf file to csv file, and then I display it in a calendar format.
 
 | original                         | output                             |
 |----------------------------------|------------------------------------|
@@ -17,7 +17,7 @@ In this project I convert the pdf file to csv file, and then I display it in a c
 
 if you want to run it:
 make sure that you have python 3.6 or higher installed on your computer.
-make sure that you have java installed on your computer, and the system variable JAVA_HOME is set to the java
+make sure that you have java installed on your computer, and the system variable `JAVA_HOME` is set to the java
 installation folder.
 
 now, you cen run the following command:
