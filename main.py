@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from typing import List
 
 import pandas as pd
@@ -103,7 +104,7 @@ def create_schedule(frame):
 
     # Add the paned windows to the grid
     for i in range(
-        (END_HOUR - START_HOUR) * (60 // HOURLY_INTERVAL)
+            (END_HOUR - START_HOUR) * (60 // HOURLY_INTERVAL)
     ):  # For each HOURLY_INTERVAL-minute interval between START_HOUR and END_HOUR
         for j in range(len(days)):  # For each day
             for k in range(NUMBER_OF_COLUMNS):  # For each column in the day
@@ -129,7 +130,7 @@ def create_schedule(frame):
 
     # Make each column expand to fill the available space
     for i in range(
-        len(days) * NUMBER_OF_COLUMNS + 2
+            len(days) * NUMBER_OF_COLUMNS + 2
     ):  # Adjust for the moved hour column
         frame.columnconfigure(i, weight=1)
 
@@ -150,7 +151,7 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
     # Sort the lectures by day and start time
     lectures = sorted(lectures, key=lambda lec: (lec.day, lec.start_time))
 
-    # Keep track of the last lecture for each day
+    # Keep track of the last lecture for each day and column
     last_lecture = {
         day: {last_col: None for last_col in range(1, NUMBER_OF_COLUMNS + 1)}
         for day in days
@@ -158,6 +159,7 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
 
     # Iterate over the lectures
     for lecture in lectures:
+        # Get the background color for the lecture
         bg_color = (
             get_color(lecture.class_name)[0]
             if "תרגיל" in lecture.class_name
@@ -181,15 +183,17 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
         # Add the lecture label to the lecture frame
         lecture_label.pack()
 
+        # calculate the columns for the lecture
         # Initialize column to -1
         column = -1
 
         # Iterate over the columns for the given day
-        for col in reversed(range(1, NUMBER_OF_COLUMNS + 1)):
-            # If there is no lecture in the column or the current lecture's start time is later than the end time of the last lecture in the column
+        for col in reversed(range(1, NUMBER_OF_COLUMNS + 1)):  # start from the right column to the left
+            # If there is no lecture in the column or
+            # the current lecture's start time is later than the end time of the last lecture in the column
             if (
-                last_lecture[lecture.day][col] is None
-                or lecture.start_time >= last_lecture[lecture.day][col].end_time
+                    last_lecture[lecture.day][col] is None
+                    or lecture.start_time >= last_lecture[lecture.day][col].end_time
             ):
                 # Set column to the current column and break the loop
                 column = col
@@ -197,9 +201,8 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
 
         # If no available column was found
         if column == -1:
-            # Add a new column for the given day and set column to the index of the new column
-            last_lecture[lecture.day][NUMBER_OF_COLUMNS + 1] = None
-            column = NUMBER_OF_COLUMNS + 1
+            messagebox.showinfo("אין מספיק מקום עבור הקורס" ,"עבור הקורס " + lecture.class_name + " אין מספיק מקום במערכת השעות" + ".\n !הקורס לא הוסף למערכת", icon="warning")  
+            continue
 
         # Add the lecture frame to the grid
         lecture_frame.grid(
