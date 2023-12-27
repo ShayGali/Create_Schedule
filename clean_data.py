@@ -1,7 +1,6 @@
 """ In this file we clean the data from the csv file and save it to a new csv file """
 
 import pandas as pd
-from bidi.algorithm import get_display
 import re
 
 pattern = r"(\d{1,2}[-.]\d{1}\.\d{1,2} \d{1,2}:\d{2} - \d{2}:\d{2})"
