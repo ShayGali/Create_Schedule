@@ -38,13 +38,13 @@ df = df[column_order]
 df.to_csv("data/clean_data.csv", index=False, encoding="utf-8")
 
 
-# for display in Hebrew
-
-# Reverse the rows
-for col in df.select_dtypes(include=[object]):
-    df[col] = df[col].apply(lambda x: get_display(str(x)) if pd.notnull(x) else x)
-
-# # Reverse the column headers
-# df.columns = [get_display(col) for col in df.columns]
-
-df.to_csv("data/clean_data_revers.csv", index=False, encoding="utf-8")
+# # for display in Hebrew
+#
+# # Reverse the rows
+# for col in df.select_dtypes(include=[object]):
+#     df[col] = df[col].apply(lambda x: get_display(str(x)) if pd.notnull(x) else x)
+#
+# # # Reverse the column headers
+# # df.columns = [get_display(col) for col in df.columns]
+#
+# df.to_csv("data/clean_data_revers.csv", index=False, encoding="utf-8")

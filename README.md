@@ -1,40 +1,26 @@
-this small project help me to build my schedule.
+I write full directions in Hebrew [here](assets/הסבר.pdf).
+
+this small project helps me to build my schedule.
 
 my university gives me the lectures schedule in a pdf file, and in rows and columns format, so I need to convert it to a
 table format(cvc file), and from there to display it in a calendar format.
 
 so I wrote this small project to help me with that.
 
-## How to use it
+In this project I convert the pdf file to csv file, and then I display it in a calendar format.
 
-I write full directions in Hebrew [here](assets/הסבר.pdf)
+| original                         | output                             |
+|----------------------------------|------------------------------------|
+| ![original](assets/original.png) | ![calendar](./assets/calendar.png) |
+
+## How to use it
 
 if you want to run it:
 make sure that you have python 3.6 or higher installed on your computer.
 make sure that you have java installed on your computer, and the system variable JAVA_HOME is set to the java
 installation folder.
 
-run the following commands:
-
-```bash
-pip install -r requirements.txt
-```
-
-now after you have the src.pdf file that contains the lectures schedule, run the following command:
-
-```bash
-python extract_data.py
-```
-
-now clean the data that created, and put the data in the table.csv file.
-
-now run the following command:
-
-```bash
-python clean_data.py
-```
-
-now you have clean data with want you need, now you can run the following command:
+now, you cen run the following command:
 
 ```bash
 python main.py
@@ -42,3 +28,11 @@ python main.py
 
 and a window will open with the calendar.
 ![calendar](./assets/calendar.png)
+
+## Work with your own schedule
+
+if you want to change the data, you have two options:
+
+1. create your own csv file, and replace the [file](data/clean_data.csv) in the data folder.
+   make sure that the file name is the same as the original file name, and that the file is in the same format.
+2. convert a pdf file to csv. you can see full directions [here](assets/הסבר.pdf).
