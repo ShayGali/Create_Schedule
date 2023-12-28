@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 from typing import List
-
 import pandas as pd
 
 from lecture import create_lectures_list, Lecture
@@ -188,7 +187,9 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
         column = -1
 
         # Iterate over the columns for the given day
-        for col in reversed(range(1, NUMBER_OF_COLUMNS + 1)):  # start from the right column to the left
+        for col in reversed(
+                range(1, NUMBER_OF_COLUMNS + 1)
+        ):  # start from the right column to the left
             # If there is no lecture in the column or
             # the current lecture's start time is later than the end time of the last lecture in the column
             if (
@@ -201,7 +202,14 @@ def add_lectures(frame: tk.Frame, lectures: List[Lecture]):
 
         # If no available column was found
         if column == -1:
-            messagebox.showinfo("אין מספיק מקום עבור הקורס" ,"עבור הקורס " + lecture.class_name + " אין מספיק מקום במערכת השעות" + ".\n !הקורס לא הוסף למערכת", icon="warning")  
+            messagebox.showinfo(
+                "אין מספיק מקום עבור הקורס",
+                "עבור הקורס "
+                + lecture.class_name
+                + " אין מספיק מקום במערכת השעות"
+                + ".\n !הקורס לא הוסף למערכת",
+                icon="warning",
+            )
             continue
 
         # Add the lecture frame to the grid
